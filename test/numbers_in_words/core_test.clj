@@ -9,7 +9,7 @@
                      1 "one"
                     21 "twenty one"
                    105 "one hundred and five"
-            ;       123 "one hundred and twenty three"
+                   123 "one hundred and twenty three"
             ;      1005 "one thousand and five"
             ;      1042 "one thousand and fourty two"
             ;      1105 "one thousand one hundred and five"

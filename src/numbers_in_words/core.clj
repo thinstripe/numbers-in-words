@@ -7,21 +7,23 @@
 
 (defn- less-than-one-hundred-in-words [n]
   (let [t (unchecked-divide-int n 10)
+        u (rem n 10)
         tens (if (zero? t)
-               "and"
+               " and"
                (tens-in-words (- t 2)))
-        units (rem n 10)]
-    (if (zero? units)
+        ]
+    (if (zero? u)
       tens
-      (str tens " " (less-than-twenty-in-words units)))))
+      (str tens " " (less-than-twenty-in-words u)))))
 
 (defn- less-than-one-thousand-in-words [n]
   (let [hundreds (unchecked-divide-int n 100)
-        tens-and-units (rem n 100)]
+        tens-and-units (rem n 100)
+        tens (unchecked-divide-int tens-and-units 10)]
     (str (less-than-twenty-in-words hundreds) " hundred"
          (if (zero? tens-and-units)
            ""
-           (str " " (less-than-one-hundred-in-words tens-and-units))))))
+           (str (if (zero? tens) "" " and ") (less-than-one-hundred-in-words tens-and-units))))))
 
 (defn in-words [n]
   (cond
