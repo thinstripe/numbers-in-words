@@ -39,7 +39,10 @@
     (str (less-than-one-thousand-in-words thousands) " thousand"
          (if (zero? hundreds-and-tens-and-units)
            ""
-           (str " and " (less-than-one-thousand-in-words hundreds-and-tens-and-units))))))
+           (str (if (zero? hundreds)
+                  " and "
+                  " ")
+                (less-than-one-thousand-in-words hundreds-and-tens-and-units))))))
 
 (defn in-words [n]
   (cond
