@@ -44,12 +44,25 @@
                   " ")
                 (less-than-one-thousand-in-words hundreds-and-tens-and-units))))))
 
+(defn- less-than-one-trillion-in-words [n]
+  (let [millions (unchecked-divide-int n 1000000)
+        thousands-hundreds-tens-and-units (rem n 1000000)
+        thousands (unchecked-divide-int thousands-hundreds-tens-and-units 100000)]
+    (str (less-than-one-hundred-in-words millions) " million"
+         (if (zero? thousands-hundreds-tens-and-units)
+           ""
+           (str (if (zero? thousands)
+                  " and "
+                  " ")
+                (less-than-one-million-in-words thousands-hundreds-tens-and-units))))))
+
 (defn in-words [n]
   (cond
     (< n 20) (less-than-twenty-in-words n)
     (< n 100) (less-than-one-hundred-in-words n)
     (< n 1000) (less-than-one-thousand-in-words n)
     (< n 1000000) (less-than-one-million-in-words n)
+    (< n 1000000000) (less-than-one-trillion-in-words n)
     :else "I don't know"))
 
 (defn- print-answer [n]
