@@ -9,23 +9,37 @@
   (let [t (unchecked-divide-int n 10)
         u (rem n 10)
         tens (if (zero? t)
-               " and"
-               (tens-in-words (- t 2)))
-        ]
+               ""
+               (tens-in-words (- t 2)))]
     (if (zero? u)
       tens
-      (str tens " " (less-than-twenty-in-words u)))))
+      (str (if (zero? t)
+             ""
+             (str tens " "))
+           (less-than-twenty-in-words u)))))
 
 (defn- less-than-one-thousand-in-words [n]
   (let [hundreds (unchecked-divide-int n 100)
         tens-and-units (rem n 100)
         tens (unchecked-divide-int tens-and-units 10)]
-    (str (less-than-twenty-in-words hundreds) " hundred"
+    (str (if (zero? hundreds)
+           ""
+           (str (less-than-twenty-in-words hundreds) " hundred"))
          (if (zero? tens-and-units)
            ""
-           (str (if (zero? tens) "" " and ") (less-than-one-hundred-in-words tens-and-units))))))
+           (str (if (zero? hundreds)
+                  ""
+                  " and ")
+                (less-than-one-hundred-in-words tens-and-units))))))
 
-(defn- less-than-one-million-in-words [n] "one thousand and five")
+(defn- less-than-one-million-in-words [n]
+  (let [thousands (unchecked-divide-int n 1000)
+        hundreds-and-tens-and-units (rem n 1000)
+        hundreds (unchecked-divide-int hundreds-and-tens-and-units 100)]
+    (str (less-than-one-thousand-in-words thousands) " thousand"
+         (if (zero? hundreds-and-tens-and-units)
+           ""
+           (str " and " (less-than-one-thousand-in-words hundreds-and-tens-and-units))))))
 
 (defn in-words [n]
   (cond
@@ -48,6 +62,5 @@
     (let [n (read-string (first args))]
       (if (number? n)
         (print-answer n)
-        (print-help)
-        ))
+        (print-help)))
     (print-help)))
