@@ -1,5 +1,4 @@
-(ns numbers-in-words.core
-  (:gen-class))
+(ns numbers-in-words.core)
 
 (def ^:private less-than-twenty-in-words ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine" "ten" "eleven" "twelve" "thirteen" "fourteen" "fifteen" "sixteen" "seventeen" "eighteen" "nineteen"])
 
@@ -64,19 +63,3 @@
     (< n 1000000) (less-than-one-million-in-words n)
     (< n 1000000000) (less-than-one-trillion-in-words n)
     :else "I don't know"))
-
-(defn- print-answer [n]
-  (println (str "The answer is " (in-words n))))
-
-(defn- print-help []
-  (println "Please provide a numeric argument."))
-
-(defn -main
-  "I can print numbers in words."
-  [& args]
-  (if (> (count args) 0)
-    (let [n (read-string (first args))]
-      (if (number? n)
-        (print-answer n)
-        (print-help)))
-    (print-help)))

@@ -7,15 +7,14 @@
                             [adzerk/boot-test "RELEASE" :scope "test"]])
 
 (task-options!
- aot {:namespace   #{'numbers-in-words.core}}
+ aot {:namespace   #{'numbers-in-words.main}}
  pom {:project     project
       :version     version
-      :description "FIXME: write description"
-      :url         "http://example/FIXME"
+      :description "Numbers in words"
       :scm         {:url "https://github.com/thinstripe/numbers-in-words"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}}
- jar {:main        'numbers-in-words.core
+ jar {:main        'numbers-in-words.main
       :file        (str "numbers-in-words-" version "-standalone.jar")})
 
 (deftask build
@@ -27,7 +26,7 @@
 (deftask run
   "Run the project."
   [a args ARG [str] "the arguments for the application."]
-  (require '[numbers-in-words.core :as app])
+  (require '[numbers-in-words.main :as app])
   (apply (resolve 'app/-main) args))
 
 (require '[adzerk.boot-test :refer [test]])
