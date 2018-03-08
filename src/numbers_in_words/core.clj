@@ -25,11 +25,14 @@
            ""
            (str (if (zero? tens) "" " and ") (less-than-one-hundred-in-words tens-and-units))))))
 
+(defn- less-than-one-million-in-words [n] "one thousand and five")
+
 (defn in-words [n]
   (cond
     (< n 20) (less-than-twenty-in-words n)
     (< n 100) (less-than-one-hundred-in-words n)
     (< n 1000) (less-than-one-thousand-in-words n)
+    (< n 1000000) (less-than-one-million-in-words n)
     :else "I don't know"))
 
 (defn- print-answer [n]
