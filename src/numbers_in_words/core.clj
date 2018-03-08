@@ -6,17 +6,17 @@
 (def ^:private tens-in-words ["twenty" "thirty" "fourty" "fifty" "sixty" "seventy" "eighty" "ninety"])
 
 (defn- less-than-one-hundred-in-words [n]
-  (let [t (unchecked-divide-int n 10)
-        u (rem n 10)
-        tens (if (zero? t)
+  (let [number-of-tens (unchecked-divide-int n 10)
+        units (rem n 10)
+        tens (if (zero? number-of-tens)
                ""
-               (tens-in-words (- t 2)))]
-    (if (zero? u)
+               (tens-in-words (- number-of-tens 2)))]
+    (if (zero? units)
       tens
-      (str (if (zero? t)
+      (str (if (zero? number-of-tens)
              ""
              (str tens " "))
-           (less-than-twenty-in-words u)))))
+           (less-than-twenty-in-words units)))))
 
 (defn- less-than-one-thousand-in-words [n]
   (let [hundreds (unchecked-divide-int n 100)
@@ -48,7 +48,7 @@
   (let [millions (unchecked-divide-int n 1000000)
         thousands-hundreds-tens-and-units (rem n 1000000)
         thousands (unchecked-divide-int thousands-hundreds-tens-and-units 100000)]
-    (str (less-than-one-hundred-in-words millions) " million"
+    (str (less-than-one-thousand-in-words millions) " million"
          (if (zero? thousands-hundreds-tens-and-units)
            ""
            (str (if (zero? thousands)
