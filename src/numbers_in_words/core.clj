@@ -9,27 +9,18 @@
 (defn- less-than-one-hundred-in-words [n]
   (let [[number-of-tens units] (quotient-and-remainder 10 n)
         less-than-ten (zero? number-of-tens)
-        tens (if less-than-ten
-               ""
-               (tens-in-words (- number-of-tens 2)))]
+        tens (if less-than-ten "" (tens-in-words (- number-of-tens 2)))]
     (if (zero? units)
       tens
-      (str (if less-than-ten
-             ""
-             (str tens " "))
+      (str (if less-than-ten "" (str tens " "))
            (less-than-twenty-in-words units)))))
 
-(defn- part-in-words [quotient-name quotient-fn divisor remainder-fn anding-fn use-quotient]
+(defn- part-in-words [quotient-name quotient-in-words divisor remainder-in-words anding and-with-quotient]
   (fn [n]
     (let [[quotient remainder] (quotient-and-remainder divisor n)
           leftover (unchecked-divide-int remainder (/ divisor 10))]
-      (str (if (zero? quotient)
-             ""
-             (str (quotient-fn quotient) " " quotient-name))
-           (if (zero? remainder)
-             ""
-             (str (anding-fn (if use-quotient quotient leftover))
-                  (remainder-fn remainder)))))))
+      (str (if (zero? quotient) "" (str (quotient-in-words quotient) " " quotient-name))
+           (if (zero? remainder) "" (str (anding (if and-with-quotient quotient leftover)) (remainder-in-words remainder)))))))
 
 (defn in-words [n]
   (let [and-when-zero (fn [n] (if (zero? n) " and " " "))
