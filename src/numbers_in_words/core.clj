@@ -4,9 +4,10 @@
 
 (def ^:private tens-in-words ["twenty" "thirty" "fourty" "fifty" "sixty" "seventy" "eighty" "ninety"])
 
+(defn- quotient-and-remainder [divisor n] [(unchecked-divide-int n divisor) (rem n divisor)])
+
 (defn- less-than-one-hundred-in-words [n]
-  (let [number-of-tens (unchecked-divide-int n 10)
-        units (rem n 10)
+  (let [[number-of-tens units] (quotient-and-remainder 10 n)
         tens (if (zero? number-of-tens)
                ""
                (tens-in-words (- number-of-tens 2)))]
@@ -19,8 +20,7 @@
 
 (defn- part-in-words [quotient-name quotient-fn divisor remainder-fn anding-fn use-quotient]
   (fn [n]
-    (let [quotient (unchecked-divide-int n divisor)
-          remainder (rem n divisor)
+    (let [[quotient remainder] (quotient-and-remainder divisor n)
           leftover (unchecked-divide-int remainder (/ divisor 10))]
       (str (if (zero? quotient)
              ""
