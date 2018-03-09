@@ -8,12 +8,13 @@
 
 (defn- less-than-one-hundred-in-words [n]
   (let [[number-of-tens units] (quotient-and-remainder 10 n)
-        tens (if (zero? number-of-tens)
+        less-than-ten (zero? number-of-tens)
+        tens (if less-than-ten
                ""
                (tens-in-words (- number-of-tens 2)))]
     (if (zero? units)
       tens
-      (str (if (zero? number-of-tens)
+      (str (if less-than-ten
              ""
              (str tens " "))
            (less-than-twenty-in-words units)))))
