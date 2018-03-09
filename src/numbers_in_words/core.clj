@@ -31,35 +31,26 @@
                   " and ")
                 (less-than-one-hundred-in-words tens-and-units))))))
 
-(defn- less-than-one-million-in-words [n]
-  (let [thousands (unchecked-divide-int n 1000)
-        hundreds-and-tens-and-units (rem n 1000)
-        hundreds (unchecked-divide-int hundreds-and-tens-and-units 100)]
-    (str (less-than-one-thousand-in-words thousands) " thousand"
-         (if (zero? hundreds-and-tens-and-units)
-           ""
-           (str (if (zero? hundreds)
-                  " and "
-                  " ")
-                (less-than-one-thousand-in-words hundreds-and-tens-and-units))))))
-
-(defn- less-than-one-trillion-in-words [n]
-  (let [millions (unchecked-divide-int n 1000000)
-        thousands-hundreds-tens-and-units (rem n 1000000)
-        thousands (unchecked-divide-int thousands-hundreds-tens-and-units 100000)]
-    (str (less-than-one-thousand-in-words millions) " million"
-         (if (zero? thousands-hundreds-tens-and-units)
-           ""
-           (str (if (zero? thousands)
-                  " and "
-                  " ")
-                (less-than-one-million-in-words thousands-hundreds-tens-and-units))))))
+(defn- part-in-words [quotient-name quotient-fn divisor remainder-fn]
+  (fn [n]
+    (let [quotient (unchecked-divide-int n divisor)
+          remainder (rem n divisor)
+          left-over (unchecked-divide-int remainder (/ divisor 10))]
+      (str (quotient-fn quotient) " " quotient-name
+           (if (zero? remainder)
+             ""
+             (str (if (zero? left-over)
+                    " and "
+                    " ")
+                  (remainder-fn remainder)))))))
 
 (defn in-words [n]
-  (cond
-    (< n 20) (less-than-twenty-in-words n)
-    (< n 100) (less-than-one-hundred-in-words n)
-    (< n 1000) (less-than-one-thousand-in-words n)
-    (< n 1000000) (less-than-one-million-in-words n)
-    (< n 1000000000) (less-than-one-trillion-in-words n)
-    :else "I don't know"))
+  (let [less-than-one-million-in-words (part-in-words "thousand" less-than-one-thousand-in-words 1000 less-than-one-thousand-in-words)
+        less-than-one-trillion-in-words (part-in-words "million" less-than-one-thousand-in-words 1000000 less-than-one-million-in-words)]
+    (cond
+      (< n 20) (less-than-twenty-in-words n)
+      (< n 100) (less-than-one-hundred-in-words n)
+      (< n 1000) (less-than-one-thousand-in-words n)
+      (< n 1000000) (less-than-one-million-in-words n)
+      (< n 1000000000) (less-than-one-trillion-in-words n)
+      :else "I don't know")))
